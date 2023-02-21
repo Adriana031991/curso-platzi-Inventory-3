@@ -1,0 +1,58 @@
+﻿@using curso_platzi_Inventory_3.Shared.Entities
+@inject ICategoryService CategoryService
+@inject IProductService ProductService
+@inject NavigationManager NavManger
+@inject ILogger<ListProductsComponent> logger;
+
+
+<div>
+	<EditForm Model="oProduct">
+		@*<div class="form-group">
+			<label>Referencia:</label>
+			<InputText @bind-Value="oProduct.ProductId" class="form-control" />
+		</div>*@
+		<div class="form-group">
+			<label>Nombre del producto:</label>
+			<InputText @bind-Value="oProduct.ProductName" class="form-control" />
+		</div>
+		<div class="form-group">
+			<label>Descripción:</label>
+			<InputText @bind-Value="oProduct.ProductDescription" class="form-control" />
+		</div>
+		<div class="form-group">
+			<label>Categoria:</label>
+			<InputSelect @bind-Value="oProduct.CategoryId" class="form-control">
+				<option>Seleccione categoria...</option>
+				@foreach (var category in CategoryService.Categories)
+				{
+					<option value="@category.CategoryId">@category.CategoryName</option>
+				}
+			</InputSelect>
+		</div>
+
+		<div class="form-group">
+			<label>Cantidad:</label>
+			<InputNumber @bind-Value="oProduct.TotalQuantity" class="form-control" />
+		</div>
+
+		<div>
+			<input type="button" value="Agregar producto" @onclick="SaveProduct" />
+		</div>
+	</EditForm>
+</div>
+
+@code {
+	ProductEntity oProduct = new ProductEntity();
+	IEnumerable<CategoryEntity> categories = new List<CategoryEntity>();
+
+	private async void SaveProduct()
+	{
+		oProduct.ProductId = Guid.NewGuid().ToString();
+		await ProductService.Save(oProduct);
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
+		await CategoryService.GetCategories();
+	}
+}

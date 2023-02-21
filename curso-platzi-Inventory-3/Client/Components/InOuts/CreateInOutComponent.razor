@@ -1,0 +1,121 @@
+﻿@using curso_platzi_Inventory_3.Shared.Entities
+@*@using curso_platzi_Inventory.Shared.Bussiness*@
+
+
+<div class="form-group">
+	<select class="form-control" @onchange="WarehouseChanged">
+		<option value="">Seleccione una bodega...</option>
+		@foreach (var warehouse in warehouses)
+		{
+			<option value="@warehouse.WarehouseId">@warehouse.WarehouseName</option>
+
+		}
+	</select>
+</div>
+
+<EditForm Model="oInOut">
+
+	<div class="form-group">
+		<label>Bodega:</label>
+		<InputSelect @bind-Value="oInOut.StorageId" class="form-control">
+			<option>Seleccione un producto...</option>
+			@foreach (var storage in storages)
+			{
+				<option value="@storage.StorageId">@storage.Product.ProductName</option>
+			}
+		</InputSelect>
+	</div>
+
+	<div class="form-group">
+		<label>Cantidad:</label>
+
+		<InputNumber class="form-control" @bind-Value="oInOut.Quantity" />
+	</div>
+	<div class="form-group">
+		<label>Es una entrada?</label>
+
+		<InputCheckbox class="form-control" @bind-Value="oInOut.IsInput" />
+	</div>
+
+	<div>
+		<input type="button" value="@buttonValue" @onclick="SaveInOut" />
+	</div>
+</EditForm>
+
+<div class="text-center h4">
+	@message
+</div>
+
+@code {
+	InputOutputEntity oInOut = new InputOutputEntity();
+
+	IEnumerable<WarehouseEntity> warehouses = new List<WarehouseEntity>();
+	IEnumerable<StorageEntity> storages = new List<StorageEntity>();
+
+	StorageEntity oStorage = new StorageEntity();
+	ProductEntity oProduct = new ProductEntity();
+
+	string buttonValue => oInOut.IsInput ? "Registrar Entrada" : "Registrar salida";
+
+	string message = "";
+
+
+	protected override async Task OnInitializedAsync()
+	{
+		//warehouses = B_Warehouse.WherehouseList();
+	}
+
+	private void WarehouseChanged(ChangeEventArgs e)
+	{
+		var idWarehouse = e.Value.ToString();
+
+		//storages = B_Storage.StorageListByWarehouse(idWarehouse);
+	}
+
+	private void SaveInOut()
+	{
+		//oStorage = storages.LastOrDefault(s => s.StorageId == oInOut.StorageId);
+		//oProduct = oStorage.Product;
+
+		//if (oInOut.IsInput)
+		//{
+		//	oStorage.PartialQuantity = oStorage.PartialQuantity + oInOut.Quantity;
+		//	B_Storage.UpdateStorage(oStorage);
+
+		//	oProduct.TotalQuantity = oProduct.TotalQuantity + oInOut.Quantity;
+		//	B_Product.UpdateProduct(oProduct);
+
+		//	message = $"el producto {oProduct.ProductName} ha sido actualizado";
+
+
+		//}
+		//else
+		//{
+		//	if (IsBiggerThanZero(oInOut.Quantity, oStorage.PartialQuantity))
+		//	{
+		//		oStorage.PartialQuantity = oStorage.PartialQuantity - oInOut.Quantity;
+		//		B_Storage.UpdateStorage(oStorage);
+
+		//		oProduct.TotalQuantity = oProduct.TotalQuantity - oInOut.Quantity;
+		//		B_Product.UpdateProduct(oProduct);
+				
+		//		message = $"el producto {oProduct.ProductName} ha sido actualizado";
+
+		//	}
+		//	else
+		//	{
+		//		message = $"No existente la cantidad suficiente en bodega para el producto: {oProduct.ProductName}";
+
+		//	}
+		//}
+	}
+
+	private bool IsBiggerThanZero(int quantity, int storageQuantity)
+	{
+		if(storageQuantity > quantity)
+		{
+			return true;
+		}
+		return false;
+	}
+}

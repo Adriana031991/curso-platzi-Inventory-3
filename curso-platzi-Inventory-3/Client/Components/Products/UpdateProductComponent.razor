@@ -1,0 +1,60 @@
+﻿@using curso_platzi_Inventory_3.Shared.Entities
+@inject ICategoryService CategoryService
+@inject IProductService ProductService
+@inject ILogger<ListProductsComponent> logger;
+
+
+
+<EditForm Model="oProduct">
+	<div class="form-group">
+		<label>Producto:</label>
+		<InputText @bind-Value="oProduct.ProductName" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label>Descripción:</label>
+		<InputText @bind-Value="oProduct.ProductDescription" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label>Categoria:</label>
+		<InputSelect @bind-Value="oProduct.CategoryId" class="form-control">
+			@foreach (var category in CategoryService.Categories)
+			{
+				<option value="@category.CategoryId">@category.CategoryName</option>
+			}
+		</InputSelect>
+	</div>
+
+	<div class="form-group">
+		<label>Cantidad:</label>
+		<InputNumber @bind-Value="oProduct.TotalQuantity" class="form-control" />
+	</div>
+
+	<div>
+		<input type="button" value="Actualizar producto" @onclick="UpdateProduct" />
+	</div>
+</EditForm>
+
+@inject NavigationManager NavManger
+
+@code {
+	[Parameter]
+	public string IdProduct { get; set; }
+
+	ProductEntity oProduct = new ProductEntity();
+
+	IEnumerable<CategoryEntity> categories = new List<CategoryEntity>();
+
+	protected override async Task OnInitializedAsync()
+	{
+		oProduct = await ProductService.GetProductById(IdProduct);
+
+		await CategoryService.GetCategories();
+		categories = CategoryService.Categories;
+	}
+
+	private async void UpdateProduct()
+	{
+		await ProductService.Update(IdProduct, oProduct);
+	}
+
+}

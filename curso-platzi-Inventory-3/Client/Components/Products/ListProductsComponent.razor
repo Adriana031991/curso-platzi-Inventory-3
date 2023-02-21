@@ -1,0 +1,113 @@
+﻿@using curso_platzi_Inventory_3.Shared.Entities;
+@inject ICategoryService CategoryService
+@inject IProductService ProductService
+@inject NavigationManager NavigationManager
+@inject ILogger<ListProductsComponent> logger;
+
+<hr />
+<select class="form-control" @onchange="CategoryChanged">
+	<option>Seleccione categoria...</option>
+	@foreach (var category in categories)
+	{
+		<option value="@category.CategoryId">@category.CategoryName</option>
+	}
+</select>
+<hr />
+
+
+<div>
+	<table class="table table-hover table-bordered">
+		<thead>
+			<tr>
+				<th>Referencia</th>
+				<th>Nombre del producto</th>
+				<th>Categoria</th>
+				<th>Cantidad</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var product in products)
+			{
+				<tr>
+					<td>
+						@product.ProductId
+					</td>
+					<td>
+						@product.ProductName
+					</td>
+					<td>
+						@*@ProductCategoryName()*@
+						@(@product.CategoryId != null ?
+							@categories.Where(c => c.CategoryId == product.CategoryId).FirstOrDefault().CategoryName :
+							"NONE")
+
+					</td>
+					<td class="text-center">
+						@product.TotalQuantity
+					</td>
+					<td>
+						<button class="btn btn-primary"
+							@onclick="(() => EditProduct(product.ProductId))">
+							<i class="oi oi-pencil"></i>
+						</button>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>
+
+@code {
+	IEnumerable<ProductEntity> products = new List<ProductEntity>();
+	IEnumerable<CategoryEntity> categories = new List<CategoryEntity>();
+
+
+	protected override async Task OnInitializedAsync()
+	{
+		await ProductService.GetProducts();
+		products = ProductService.Products;
+		await CategoryService.GetCategories();
+		categories = CategoryService.Categories;
+
+	}
+
+	void EditProduct(string id)
+	{
+		NavigationManager.NavigateTo($"product/update/{id}");
+	}
+
+	private void CategoryChanged(ChangeEventArgs e)
+	{
+		products = ProductService.Products.Where(c => c.CategoryId == e.Value.ToString()).ToList();
+	}
+
+	//private string ProductCategoryName()
+	//{
+	//	var response = "";
+	//	foreach(var product in products)
+	//	{
+
+	//		if (product.CategoryId != null)
+	//		{
+
+	//			var r  = (from d in categories
+	//						where d.CategoryId == product.CategoryId
+	//						select d.CategoryName).FirstOrDefault();
+
+	//			response = r;
+	//			logger.LogInformation("r " + r);
+
+	//			//response = categories.Where(c => c.CategoryId == product.CategoryId).FirstOrDefault().CategoryName;
+	//		} else
+	//		{
+				
+	//		response =  "None";
+	//		}
+
+	//	}
+	//	logger.LogInformation("response " + response);
+	//	return response;
+	//}
+
+}
