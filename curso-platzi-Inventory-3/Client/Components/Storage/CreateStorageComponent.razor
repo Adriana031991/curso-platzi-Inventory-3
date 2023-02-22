@@ -1,6 +1,11 @@
 ﻿@using curso_platzi_Inventory_3.Shared.Entities
-@*@using curso_platzi_Inventory.Shared.Bussiness*@
 
+@inject ICategoryService CategoryService
+@inject IProductService ProductService
+@inject IWareHouseService WareHouseService
+@inject IStorageService StorageService
+@inject NavigationManager NavigationManager
+@inject ILogger<ListProductsComponent> logger;
 
 <EditForm Model="oStorage">
 
@@ -18,7 +23,7 @@
 	<div class="form-group">
 		<label>Producto:</label>
 		<InputSelect @bind-Value="oStorage.ProductId" class="form-control">
-			<option>Seleccione una bodega...</option>
+			<option>Seleccione un producto...</option>
 			@foreach (var product in products)
 			{
 				<option value="@product.ProductId">@product.ProductName</option>
@@ -35,6 +40,8 @@
 	@message
 </div>
 
+
+
 @code {
 	StorageEntity oStorage = new StorageEntity();
 
@@ -44,23 +51,38 @@
 	string message;
 	protected override async Task OnInitializedAsync()
 	{
-		//warehouses = B_Warehouse.WherehouseList();
-		//products = B_Product.ProductList();
+		await ProductService.GetProducts();
+		products = ProductService.Products;
+		await WareHouseService.GetWarehouses();
+		warehouses = WareHouseService.WarehousesList;
 	}
 
-	private void SaveStorage()
+	private async void SaveStorage()
 	{
-		//oStorage.StorageId = $"{oStorage.WarehouseId} -{oStorage.ProductId}";
-		//if (B_Storage.IsProductInWarehouse(oStorage.StorageId))
-		//{
-		//	oStorage.LastUpdate = DateTime.Now;
-		//	B_Storage.CreateStorage(oStorage);
-		//	message = "producto registrado";
-		//}
-		//else
-		//{
+		oStorage.StorageId = Guid.NewGuid().ToString();
+		oStorage.LastUpdate = DateTime.Now;
+		//oStorage.PartialQuantity = products.Where(a => a.ProductId == oStorage.ProductId).Select(a=>a).FirstOrDefault().TotalQuantity;
+		oStorage.PartialQuantity = (from a in products where (a.ProductId == oStorage.ProductId) select a).FirstOrDefault().TotalQuantity;
+		var res = await StorageService.IsProductInWarehouse(oStorage.StorageId);
+		
 
-		//	message = "producto existente";
-		//}
+		Console.WriteLine("warehouse  " + warehouses.Where(w => w.WarehouseId == oStorage.WarehouseId).FirstOrDefault().ToString());
+		Console.WriteLine("storage  " +  oStorage.ToString());
+		//Console.WriteLine("res " + res.Result.Values + "  -   " + res.FirstOrDefault().Value );
+		Console.WriteLine("res " + res.FirstOrDefault().ToString() );
+		
+		if (res.FirstOrDefault().Value.Equals(true))
+		{
+			message = "producto registrado";
+			Console.WriteLine("entra true  " + res.FirstOrDefault().Value);
+			oStorage.LastUpdate = DateTime.Now;
+			StorageService.Save(oStorage);
+			//B_Storage.CreateStorage();
+		}
+		else
+		{
+			message = "producto existente";
+			Console.WriteLine("entra false  " + res.FirstOrDefault().Value);
+		}
 	}
 }

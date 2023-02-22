@@ -1,0 +1,37 @@
+﻿@using curso_platzi_Inventory_3.Shared.Entities
+@inject ICategoryService CategoryService
+@inject ILogger<ListProductsComponent> logger;
+
+
+
+<EditForm Model="oCategory">
+	<div class="form-group">
+		<label>Nombre de la categoria:</label>
+		<InputText @bind-Value="oCategory.CategoryName" class="form-control" />
+	</div>
+
+
+	<div>
+		<input type="button" value="Actualizar producto" @onclick="UpdateCategory" />
+	</div>
+</EditForm>
+
+@code {
+	[Parameter]
+	public string IdCategory { get; set; }
+
+	CategoryEntity oCategory = new CategoryEntity();
+
+	protected override async Task OnInitializedAsync()
+	{
+		oCategory = await CategoryService.GetCategoryById(IdCategory);
+
+		await CategoryService.GetCategories();
+	}
+
+	private async void UpdateCategory()
+	{
+		await CategoryService.UpdateCategory(IdCategory, oCategory);
+	}
+
+}

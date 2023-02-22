@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "curso-platzi-Inventory-3.Server", "curso-platzi-Inventory-3\Server\curso-platzi-Inventory-3.Server.csproj", "{DA23ED75-8822-4ECB-99E9-3D71ECAC56CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "curso-platzi-Inventory-3.Server", "curso-platzi-Inventory-3\Server\curso-platzi-Inventory-3.Server.csproj", "{DA23ED75-8822-4ECB-99E9-3D71ECAC56CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "curso-platzi-Inventory-3.Client", "curso-platzi-Inventory-3\Client\curso-platzi-Inventory-3.Client.csproj", "{2890EBF0-1177-4EDD-AD75-ECF7EDF5F1B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "curso-platzi-Inventory-3.Client", "curso-platzi-Inventory-3\Client\curso-platzi-Inventory-3.Client.csproj", "{2890EBF0-1177-4EDD-AD75-ECF7EDF5F1B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "curso-platzi-Inventory-3.Shared", "curso-platzi-Inventory-3\Shared\curso-platzi-Inventory-3.Shared.csproj", "{57B6AB58-36CA-47D2-9093-A3A5F24D3B32}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "curso-platzi-Inventory-3.Shared", "curso-platzi-Inventory-3\Shared\curso-platzi-Inventory-3.Shared.csproj", "{57B6AB58-36CA-47D2-9093-A3A5F24D3B32}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

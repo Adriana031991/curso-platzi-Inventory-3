@@ -21,5 +21,12 @@ namespace curso_platzi_Inventory_3.Shared.Entities
 
 		//Relación con almacenamiento (StorageEntity)
 		public ICollection<StorageEntity> Storages { get; set; }
-	}
+
+
+        public override string ToString()
+        {
+            return "WarehouseId: " + WarehouseId + " WarehouseName: " + WarehouseName + " WarehouseAddress: " + WarehouseAddress +
+                " Storages: " + Storages ;
+        }
+    }
 }

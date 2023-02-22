@@ -82,32 +82,32 @@
 		products = ProductService.Products.Where(c => c.CategoryId == e.Value.ToString()).ToList();
 	}
 
-	//private string ProductCategoryName()
-	//{
-	//	var response = "";
-	//	foreach(var product in products)
-	//	{
+	private string ProductCategoryName()
+	{
+		var response = "";
+		foreach(var product in products)
+		{
 
-	//		if (product.CategoryId != null)
-	//		{
+			if (product.CategoryId != null)
+			{
 
-	//			var r  = (from d in categories
-	//						where d.CategoryId == product.CategoryId
-	//						select d.CategoryName).FirstOrDefault();
+				var r  = (from d in categories
+							where d.CategoryId == product.CategoryId
+							select d.CategoryName).FirstOrDefault();
 
-	//			response = r;
-	//			logger.LogInformation("r " + r);
+				response = r;
+				logger.LogInformation("r " + r);
 
-	//			//response = categories.Where(c => c.CategoryId == product.CategoryId).FirstOrDefault().CategoryName;
-	//		} else
-	//		{
+				//response = categories.Where(c => c.CategoryId == product.CategoryId).FirstOrDefault().CategoryName;
+			} else
+			{
 				
-	//		response =  "None";
-	//		}
+			response =  "None";
+			}
 
-	//	}
-	//	logger.LogInformation("response " + response);
-	//	return response;
-	//}
+		}
+		logger.LogInformation("response " + response);
+		return response;
+	}
 
 }

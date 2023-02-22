@@ -24,6 +24,12 @@ namespace curso_platzi_Inventory_3.Server.Controllers
 			return await _categoryService.CategoryList();
 		}
 
+		[HttpGet("{id}")]
+		public async Task<CategoryEntity?> GetCategoryById(string id)
+		{
+			return await _categoryService.GetCategoryById(id);
+		}
+
 		[HttpPost]
 		public async Task<CategoryEntity?> CreateCategory(CategoryEntity category)
 		{

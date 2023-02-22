@@ -1,0 +1,54 @@
+﻿@using curso_platzi_Inventory_3.Shared.Entities;
+@inject ICategoryService CategoryService
+@inject NavigationManager NavigationManager
+
+<div>
+	<table class="table table-hover table-bordered">
+		<thead>
+			<tr>
+				<th>ID Categoria</th>
+				<th>Nombre de la categoria</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var category in categories)
+			{
+				<tr>
+					<td>
+						@category.CategoryId
+					</td>
+					<td>
+						@category.CategoryName
+					</td>
+					<td>
+						<button class="btn btn-primary"
+							@onclick="(() => EditCategory(category.CategoryId))">
+							<i class="oi oi-pencil"></i>
+						</button>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>
+
+
+
+@code {
+	IEnumerable<CategoryEntity> categories = new List<CategoryEntity>();
+
+
+	protected override async Task OnInitializedAsync()
+	{
+		await CategoryService.GetCategories();
+		categories = CategoryService.Categories;
+
+	}
+
+	void EditCategory(string id)
+	{
+		NavigationManager.NavigateTo($"category/update/{id}");
+	}
+
+}

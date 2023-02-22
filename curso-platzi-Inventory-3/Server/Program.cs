@@ -1,6 +1,9 @@
 using curso_platzi_Inventory_3.Server.DataAccess;
 using curso_platzi_Inventory_3.Server.ServerService.CategoryService;
+using curso_platzi_Inventory_3.Server.ServerService.InputOutputService;
 using curso_platzi_Inventory_3.Server.ServerService.ProductService;
+using curso_platzi_Inventory_3.Server.ServerService.StorageService;
+using curso_platzi_Inventory_3.Server.ServerService.WareHouseService;
 using Microsoft.AspNetCore.ResponseCompression;
 
 namespace curso_platzi_Inventory_3
@@ -18,6 +21,9 @@ namespace curso_platzi_Inventory_3
 			builder.Services.AddDbContext<InventaryContext>();
 			builder.Services.AddScoped<IProductService, ProductService>();
 			builder.Services.AddScoped<ICategoryService, CategoryService>();
+			builder.Services.AddScoped<IInputOutputService, InputOutputService>();
+			builder.Services.AddScoped<IStorageService, StorageService>();
+			builder.Services.AddScoped<IWareHouseService, WarehouseService>();
 
 			var app = builder.Build();
 

@@ -1,0 +1,29 @@
+﻿@using curso_platzi_Inventory_3.Shared.Entities
+@inject ICategoryService CategoryService
+@inject NavigationManager NavManger
+@inject ILogger<ListProductsComponent> logger;
+
+
+<div>
+	<EditForm Model="oCategory">
+
+		<div class="form-group">
+			<label>Nombre de la categoria:</label>
+			<InputText @bind-Value="oCategory.CategoryName" class="form-control" />
+		</div>
+
+		<div>
+			<input type="button" value="Agregar producto" @onclick="SaveCategory" />
+		</div>
+	</EditForm>
+</div>
+
+@code {
+	CategoryEntity oCategory = new CategoryEntity();
+
+	private async void SaveCategory()
+	{
+		oCategory.CategoryId = Guid.NewGuid().ToString();
+		await CategoryService.CreateCategory(oCategory);
+	}
+}

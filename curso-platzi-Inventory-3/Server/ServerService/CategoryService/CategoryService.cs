@@ -41,6 +41,12 @@ namespace curso_platzi_Inventory_3.Server.ServerService.CategoryService
 			return true;
 		}
 
+		public async Task<CategoryEntity?> GetCategoryById(string categoryId)
+		{
+			var dbCategory = await _context.Categories.FindAsync(categoryId);
+			return dbCategory;
+		}
+
 		public async Task<CategoryEntity?> UpdateCategory(string id, CategoryEntity oCategory)
 		{
 			var dbCategory = await _context.Categories.FindAsync(id);

@@ -3,6 +3,7 @@ using curso_platzi_Inventory_3.Client.Components.Products;
 using curso_platzi_Inventory_3.Shared.Entities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
+using System.Net;
 using System.Net.Http.Json;
 
 namespace curso_platzi_Inventory_3.Client.Service.CategoryService
@@ -27,14 +28,14 @@ namespace curso_platzi_Inventory_3.Client.Service.CategoryService
 		{
 			var result = await _http.GetFromJsonAsync<List<CategoryEntity>>("api/category");
 			if (result is not null)
-				Categories = result;
+				Categories = result.OrderBy(c=>c.CategoryName).ToList();
 
 		}
 
 		public async Task CreateCategory(CategoryEntity oCategory)
 		{
 			await _http.PostAsJsonAsync("api/category", oCategory);
-			//_navigationManger.NavigateTo("product/list");
+			_navigationManger.NavigateTo("category/list");
 		}
 
 		public async Task DeleteCategory(string id)
@@ -45,9 +46,17 @@ namespace curso_platzi_Inventory_3.Client.Service.CategoryService
 		public async Task UpdateCategory(string id, CategoryEntity oCategory)
 		{
 			await _http.PutAsJsonAsync($"api/category/{id}", oCategory);
-			//_navigationManger.NavigateTo("product/list");
+			_navigationManger.NavigateTo("category/list");
 		}
 
-
+		public async Task<CategoryEntity?> GetCategoryById(string id)
+		{
+			var result = await _http.GetAsync($"api/category/{id}");
+			if (result.StatusCode == HttpStatusCode.OK)
+			{
+				return await result.Content.ReadFromJsonAsync<CategoryEntity>();
+			}
+			return null;
+		}
 	}
 }

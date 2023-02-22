@@ -26,5 +26,11 @@ namespace curso_platzi_Inventory_3.Shared.Entities
 		//Relación con almacenamiento (StorageEntity)
 		public string StorageId { get; set; }
 		public StorageEntity Storage { get; set; }
-	}
+
+        public override string ToString()
+        {
+            return "InOutId: " + InOutId + " InOutDate: " + InOutDate + " Quantity: " + Quantity +
+                " IsInput: " + IsInput + " StorageId: " + StorageId;
+        }
+    }
 }
