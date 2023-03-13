@@ -36,9 +36,14 @@
 	</div>
 </EditForm>
 
-<div class="text-center h4">
+<div class="text-center h1">
 	@message
 </div>
+<div class="text-center h1">
+	@message
+	<p>aaaaaaaaaaaaaaaaaaaaaa</p>
+</div>
+<hr />
 
 
 
@@ -59,30 +64,40 @@
 
 	private async void SaveStorage()
 	{
-		oStorage.StorageId = Guid.NewGuid().ToString();
-		oStorage.LastUpdate = DateTime.Now;
-		//oStorage.PartialQuantity = products.Where(a => a.ProductId == oStorage.ProductId).Select(a=>a).FirstOrDefault().TotalQuantity;
-		oStorage.PartialQuantity = (from a in products where (a.ProductId == oStorage.ProductId) select a).FirstOrDefault().TotalQuantity;
-		var res = await StorageService.IsProductInWarehouse(oStorage.StorageId);
-		
 
-		Console.WriteLine("warehouse  " + warehouses.Where(w => w.WarehouseId == oStorage.WarehouseId).FirstOrDefault().ToString());
-		Console.WriteLine("storage  " +  oStorage.ToString());
-		//Console.WriteLine("res " + res.Result.Values + "  -   " + res.FirstOrDefault().Value );
-		Console.WriteLine("res " + res.FirstOrDefault().ToString() );
-		
-		if (res.FirstOrDefault().Value.Equals(true))
+		var productNameSelected = (from a in products where (a.ProductId == oStorage.ProductId) select a).FirstOrDefault().ProductName;
+		Console.WriteLine("productNameSelected " + productNameSelected);
+		var id = $"{oStorage.WarehouseId}-{oStorage.ProductId}";
+
+		if (!string.IsNullOrEmpty(oStorage.WarehouseId) && !string.IsNullOrEmpty(oStorage.ProductId))
+
 		{
-			message = "producto registrado";
-			Console.WriteLine("entra true  " + res.FirstOrDefault().Value);
-			oStorage.LastUpdate = DateTime.Now;
-			StorageService.Save(oStorage);
-			//B_Storage.CreateStorage();
+			var res = await StorageService.IsProductInWarehouse(id);
+
+
+			if (res.FirstOrDefault().Value.Equals(false))
+			{
+
+				oStorage.StorageId = id;
+				//oStorage.StorageId = Guid.NewGuid().ToString();
+				oStorage.LastUpdate = DateTime.Now;
+				//oStorage.PartialQuantity = products.Where(a => a.ProductId == oStorage.ProductId).Select(a=>a).FirstOrDefault().TotalQuantity;
+				oStorage.PartialQuantity = (from a in products where (a.ProductId == oStorage.ProductId) select a).FirstOrDefault().TotalQuantity;
+
+				await StorageService.Save(oStorage);
+				message = $"El producto {productNameSelected} se agregó {oStorage.Warehouse.WarehouseName}";
+				Console.WriteLine("entra false  " + res.FirstOrDefault().Value + " -- " + message);
+			}
+			else
+			{
+				message = $"El producto {productNameSelected} ya se encuentra en a bodega {oStorage.Warehouse.WarehouseName}";
+				Console.WriteLine("entra true  " + res.FirstOrDefault().Value + " -- " + message);
+			}
 		}
 		else
 		{
-			message = "producto existente";
-			Console.WriteLine("entra false  " + res.FirstOrDefault().Value);
+			message = $"El producto {productNameSelected} no pudo ser registrado";
 		}
 	}
+}
 }

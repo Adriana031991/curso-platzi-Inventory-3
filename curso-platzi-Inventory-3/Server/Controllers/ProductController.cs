@@ -2,11 +2,13 @@
 using curso_platzi_Inventory_3.Server.ServerService.ProductService;
 using curso_platzi_Inventory_3.Shared.Entities;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Mime;
 
 namespace curso_platzi_Inventory_3.Server.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[Produces(MediaTypeNames.Application.Json)]//buscar
 	public class ProductController : ControllerBase
 	{
 
@@ -19,9 +21,10 @@ namespace curso_platzi_Inventory_3.Server.Controllers
 
 
 		[HttpGet]
-		public async Task<List<ProductEntity>> Get()
+		public async Task<ActionResult<ProductEntity>> Get()
 		{
-			return await _productService.GetProducts();
+			var data = await _productService.GetProducts();
+			return Ok(data);
 		}
 
 		[HttpGet("{id}")]

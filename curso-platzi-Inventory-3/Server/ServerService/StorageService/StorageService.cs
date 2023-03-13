@@ -51,7 +51,7 @@ namespace curso_platzi_Inventory_3.Server.ServerService.StorageService
 
 			var storages = await _context.Storages.ToListAsync();
 			//var storage = (from s in storages where (s.StorageId == storageId) select s);
-			var storage = storages.Where(s => s.StorageId == storageId).FirstOrDefault();
+			var storage = storages.Where(s => s.StorageId == storageId);
 
 			response.Add("IsProductInWarehouse", storage.Any());
 

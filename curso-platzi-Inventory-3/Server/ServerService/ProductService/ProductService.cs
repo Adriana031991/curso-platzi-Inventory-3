@@ -29,13 +29,13 @@ namespace curso_platzi_Inventory_3.Server.ServerService.ProductService
 
 		public async Task<ProductEntity?> GetProductById(string productId)
 		{
-			var dbProduct = await _context.Products.FindAsync(productId);
+			var dbProduct = await _context.Products.Include(p => p.Category).FirstOrDefaultAsync(p=>p.ProductId == productId);
 			return dbProduct;
 		}
 
 		public async Task<List<ProductEntity>> GetProducts()
 		{
-			return await _context.Products.ToListAsync();
+			return await _context.Products.Include(p=>p.Category).ToListAsync();
 		}
 
 		public async Task<ProductEntity> Save(ProductEntity productEntity)
@@ -47,7 +47,7 @@ namespace curso_platzi_Inventory_3.Server.ServerService.ProductService
 
 		public async Task<ProductEntity> Update(string id, ProductEntity productEntity)
 		{
-			var dbProduct = await _context.Products.FindAsync(id);
+			var dbProduct = await _context.Products.Include(p => p.Category).FirstOrDefaultAsync(p => p.ProductId == id);
 			if (dbProduct != null)
 			{
 				dbProduct.ProductName = productEntity.ProductName;

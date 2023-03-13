@@ -41,7 +41,7 @@ namespace curso_platzi_Inventory_3.Server.DataAccess
 			modelBuilder.Entity<WarehouseEntity>().ToTable("Warehouse");
 			modelBuilder.Entity<StorageEntity>().ToTable("Storage");
 
-
+			//semillas no son mock
 			modelBuilder.Entity<CategoryEntity>().HasData(
 				new CategoryEntity { CategoryId = "ASH", CategoryName = "Aseo Hogar" },
 				new CategoryEntity { CategoryId = "ASP", CategoryName = "Aseo Personal" },

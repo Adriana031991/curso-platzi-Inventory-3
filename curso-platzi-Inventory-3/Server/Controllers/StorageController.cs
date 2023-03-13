@@ -1,5 +1,4 @@
 ﻿using curso_platzi_Inventory_3.Server.ServerService.StorageService;
-using curso_platzi_Inventory_3.Server.ServerService.WareHouseService;
 using curso_platzi_Inventory_3.Shared.Entities;
 using Microsoft.AspNetCore.Mvc;
 
